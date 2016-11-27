@@ -19,6 +19,10 @@ public class Bullet {
         this.speed = speed;
         this.size = size;
         this.damage = damage;
+        if(game.getGameStateManager().getGameState().equals(game.getGameStateManager().UPGRADE_STATE)) {
+            x = game.getWindow().getWIDTH() - 290;
+            y = game.getWindow().getHEIGHT() - 100;
+        }
     }
 
     public void tick() {

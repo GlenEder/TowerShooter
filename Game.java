@@ -14,6 +14,7 @@ public class Game implements Runnable{
     private static MainMenu mainMenu;
     private static LevelHandler levelHandler;
     private static GameStateManager gameStateManager;
+    private static UpgradeMenu upgradeMenu;
     private static boolean running = false;
 
     private static int TPS = 0;
@@ -32,6 +33,7 @@ public class Game implements Runnable{
         levelHandler = new LevelHandler();
         collisions = new Collisions();
         mainMenu = new MainMenu();
+        upgradeMenu = new UpgradeMenu();
 
         player = new Player();
     }
@@ -90,6 +92,8 @@ public class Game implements Runnable{
             collisions.tick();
         }else if(gameState.equals(gameStateManager.MENU_STATE)) {
             mainMenu.tick();
+        }else if(gameState.equals(gameStateManager.UPGRADE_STATE)) {
+            upgradeMenu.tick();
         }
 
 
@@ -137,6 +141,10 @@ public class Game implements Runnable{
 
     public MainMenu getMainMenu() {
         return mainMenu;
+    }
+
+    public UpgradeMenu getUpgradeMenu() {
+        return upgradeMenu;
     }
 }
 

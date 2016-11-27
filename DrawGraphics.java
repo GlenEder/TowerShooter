@@ -88,6 +88,10 @@ public class DrawGraphics extends JPanel implements Runnable{
                 if(game.getMainMenu() != null) {
                     game.getMainMenu().render(g);
                 }
+            }else if(gameState.equals(game.getGameStateManager().UPGRADE_STATE)) {
+                if(game.getUpgradeMenu() != null) {
+                    game.getUpgradeMenu().render(g);
+                }
             }
 
         ///////////
@@ -119,6 +123,8 @@ public class DrawGraphics extends JPanel implements Runnable{
             g.drawString("Clicked: " + game.getPlayer().isClicked(), width - 150, 65);
             g.drawString("SPACE: " + game.getKeyInput().isSPACE(), width - 150, 85);
             g.drawString("#Enemies: " + game.getLevelHandler().getEnemies().size(), width -150, 105);
+            g.drawString("#Enemies Left: " + game.getLevelHandler().numEnemiesLeft(), width - 150, 125);
+            g.drawString("Level: " + game.getLevelHandler().getLevel(), width -150, 145);
         }
 
         g.dispose();

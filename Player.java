@@ -221,6 +221,25 @@ public class Player implements MouseMotionListener, MouseListener{
         score += i;
     }
 
+    public void increaseBulletDamage() {
+        bulletDamage += 5;
+    }
+
+    public void decreaseCoolDown() {
+        coolDown -= 50000000;
+        if(coolDown <= 100000000) {
+            coolDown = 100000000;
+        }
+    }
+
+    public void increaseBulletSize() {
+        bulletSize += 2;
+    }
+
+    public void increaseMaxHealth() {
+        maxHealth += 50;
+    }
+
 
 
 
@@ -251,6 +270,7 @@ public class Player implements MouseMotionListener, MouseListener{
     @Override
     public void mouseReleased(MouseEvent e) {
         clicked = false;
+        game.getUpgradeMenu().setUnClicked(true);
     }
 
     @Override
