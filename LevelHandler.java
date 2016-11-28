@@ -26,21 +26,26 @@ public class LevelHandler {
     private int[] numEnemies = new int[5];
     private int level = 1;
     private boolean changed = false;
+    private boolean newLevel = true;
 
     public synchronized void tick() {
         //System.out.println("levelHandler");
 
-        if(level == 1) {
+        if (newLevel) {
+            System.out.println("init enemies");
+            changed = false;
             initEnemies();
+            newLevel = false;
         }
 
-        if(numEnemiesLeft() == 0 && enemies.size() == 0) {
+        if (numEnemiesLeft() == 0 && enemies.size() == 0) {
             game.getGameStateManager().setGameState(game.getGameStateManager().UPGRADE_STATE);
         }
 
-        //spawn enimes on timer
-        if(enimiesLeft()) {
-            if (now - lastTime >= interval) {
+        //spawn enemies on timer
+        if (now - lastTime >= interval) {
+
+            if (enemiesLeft()) {
 
                 boolean ranX = true;
                 if (r.nextInt(10) % 2 == 0) {
@@ -92,55 +97,104 @@ public class LevelHandler {
                 }
 
                 int eType = r.nextInt(numEnemies.length);
-                switch (eType) {
-                    case 1:
-                        if (numEnemies[1] != 0) {
+
+                if (eType == 1) {
+                    if (numEnemies[1] != 0) {
+                        System.out.println("making 1");
+                        size = 16;
+                        damage = 10;
+                        health = 6;
+                        value = 2;
+                        speed = 1.3;
+                        --numEnemies[1];
+                    } else {
+                        eType = 2;
+                    }
+                }
+
+                if (eType == 2) {
+                    if (numEnemies[2] != 0) {
+                        System.out.println("making 2");
+                        size = 20;
+                        damage = 20;
+                        health = 20;
+                        value = 10;
+                        speed = 2;
+                        --numEnemies[2];
+                    } else {
+                        eType = 3;
+                    }
+                }
+
+                if (eType == 3) {
+                    if (numEnemies[3] != 0) {
+                        System.out.println("making 3");
+                        size = 16;
+                        damage = 10;
+                        health = 6;
+                        value = 2;
+                        speed = 1.3;
+                        --numEnemies[3];
+                    } else {
+                        eType = 4;
+                    }
+                }
+
+                if (eType == 4) {
+                    if (numEnemies[4] != 0) {
+                        System.out.println("making 4");
+                        size = 16;
+                        damage = 10;
+                        health = 6;
+                        value = 2;
+                        speed = 1.3;
+                        --numEnemies[4];
+                    } else {
+                        if (numEnemies[0] != 0) {
+                            System.out.println("making 0");
                             size = 8;
                             damage = 5;
                             health = 3;
                             value = 1;
                             speed = 2.6;
-                            numEnemies[1]--;
-                            break;
-                        } else {
-                            eType = 2;
-                            break;
+                            --numEnemies[0];
                         }
-                    default:
-                        size = 8;
-                        damage = 5;
-                        health = 3;
-                        value = 1;
-                        speed = 2.6;
-                        numEnemies[0]--;
-                        break;
+                    }
+
+                    Enemy e = new Enemy(x, y, speed, size, damage, health, value);
+                    enemies.add(e);
+                    lastTime = now;
                 }
 
-                Enemy e = new Enemy(x, y, speed, size, damage, health, value);
-                enemies.add(e);
-                lastTime = now;
+
             }
 
-            now = System.nanoTime();
         }
+        now = System.nanoTime();
     }
 
     private void initEnemies() {
-        if(!changed) {
-            switch (level) {
-                case 1:
-                    numEnemies[0] = 5;
-                    changed = true;
-                    break;
-                default:
-                    System.out.println("Out of levels");
-                    changed = true;
-                    break;
+        if (!changed) {
+            if (level == 1) {
+                numEnemies[0] = 5;
+                numEnemies[1] = 0;
+                numEnemies[2] = 0;
+                numEnemies[3] = 0;
+                numEnemies[4] = 0;
+            } else {
+                numEnemies[0] = 1 + 5 * level;
+                numEnemies[1] = 1 + 3 * level;
+                numEnemies[2] = 2 + 2 * level;
+                numEnemies[3] = 3 * level;
+                numEnemies[4] = level;
+                System.out.println("#enemies: " + numEnemiesLeft());
             }
         }
+        changed = true;
     }
 
-    private boolean enimiesLeft() {
+
+    private boolean enemiesLeft() {
         for(int i = 0; i < numEnemies.length; i++) {
             if(numEnemies[i] != 0) {
                 return true;
@@ -166,5 +220,13 @@ public class LevelHandler {
 
     public int getLevel() {
         return level;
+    }
+
+    public void increaseLevel() {
+        level++;
+    }
+
+    public void setNewLevel(boolean b) {
+        newLevel = b;
     }
 }

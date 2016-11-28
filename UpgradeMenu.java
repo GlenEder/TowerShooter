@@ -92,6 +92,9 @@ public class UpgradeMenu {
                 changeButtonColor("nextLevel", Color.green);
                 if(unClicked && game.getPlayer().isClicked()) {
                     System.out.println("going to next level");
+                    game.getLevelHandler().setNewLevel(true);
+                    game.getLevelHandler().increaseLevel();
+                    game.getGameStateManager().setGameState(game.getGameStateManager().PLAYING_STATE);
                     unClicked = false;
                 }
             }else {
