@@ -232,6 +232,10 @@ public class Player implements MouseMotionListener, MouseListener{
         }
     }
 
+    public void decreaseScore(int amount) {
+        score -= amount;
+    }
+
     public void increaseBulletSize() {
         bulletSize += 2;
     }

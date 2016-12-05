@@ -100,7 +100,6 @@ public class LevelHandler {
 
                 if (eType == 1) {
                     if (numEnemies[1] != 0) {
-                        System.out.println("making 1");
                         size = 16;
                         damage = 10;
                         health = 6;
@@ -114,7 +113,6 @@ public class LevelHandler {
 
                 if (eType == 2) {
                     if (numEnemies[2] != 0) {
-                        System.out.println("making 2");
                         size = 20;
                         damage = 20;
                         health = 20;
@@ -128,7 +126,6 @@ public class LevelHandler {
 
                 if (eType == 3) {
                     if (numEnemies[3] != 0) {
-                        System.out.println("making 3");
                         size = 16;
                         damage = 10;
                         health = 6;
@@ -142,7 +139,6 @@ public class LevelHandler {
 
                 if (eType == 4) {
                     if (numEnemies[4] != 0) {
-                        System.out.println("making 4");
                         size = 16;
                         damage = 10;
                         health = 6;
@@ -151,7 +147,6 @@ public class LevelHandler {
                         --numEnemies[4];
                     } else {
                         if (numEnemies[0] != 0) {
-                            System.out.println("making 0");
                             size = 8;
                             damage = 5;
                             health = 3;

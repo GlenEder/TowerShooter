@@ -18,6 +18,7 @@ public class UpgradeMenu {
     private Color cannonSpeedColor = Color.white;
     private Color maxHealthColor = Color.white;
     private Color nextLevelColor = Color.white;
+    private Color scoreColor = Color.white;
     private Rectangle bulletDamage;
     private Rectangle bulletSize;
     private Rectangle cannonSpeed;
@@ -25,6 +26,7 @@ public class UpgradeMenu {
     private Rectangle nextLevel;
 
     private boolean unClicked = true;
+    private int price = 3;
 
 
     long now = System.nanoTime();
@@ -36,6 +38,10 @@ public class UpgradeMenu {
             game.getDrawGraphics().changeCursor();
         }
 
+        if(game.getPlayer().getBullets().size() != 0) {
+            game.getPlayer().getBullets().clear();
+        }
+
         x = game.getPlayer().getX();
         y = game.getPlayer().getY();
 
@@ -44,6 +50,7 @@ public class UpgradeMenu {
                 changeButtonColor("bulletDamage", Color.green);
                 if(unClicked && game.getPlayer().isClicked()) {
                     game.getPlayer().increaseBulletDamage();
+                    buyUpgrade();
                     unClicked = false;
                 }
             }else {
@@ -56,6 +63,7 @@ public class UpgradeMenu {
                 changeButtonColor("cannonSpeed", Color.green);
                 if(unClicked && game.getPlayer().isClicked()) {
                     game.getPlayer().decreaseCoolDown();
+                    buyUpgrade();
                     unClicked = false;
                 }
             }else {
@@ -68,6 +76,7 @@ public class UpgradeMenu {
                 changeButtonColor("bulletSize", Color.green);
                 if(unClicked && game.getPlayer().isClicked()) {
                     game.getPlayer().increaseBulletSize();
+                    buyUpgrade();
                     unClicked = false;
                 }
             }else {
@@ -80,6 +89,7 @@ public class UpgradeMenu {
                 changeButtonColor("maxHealth", Color.green);
                 if(unClicked && game.getPlayer().isClicked()) {
                     game.getPlayer().increaseMaxHealth();
+                    buyUpgrade();
                     unClicked = false;
                 }
             }else {
@@ -94,6 +104,7 @@ public class UpgradeMenu {
                     System.out.println("going to next level");
                     game.getLevelHandler().setNewLevel(true);
                     game.getLevelHandler().increaseLevel();
+                    game.getPlayer().setHealth(game.getPlayer().getMaxHealth());
                     game.getGameStateManager().setGameState(game.getGameStateManager().PLAYING_STATE);
                     unClicked = false;
                 }
@@ -128,7 +139,9 @@ public class UpgradeMenu {
         g.setColor(Color.WHITE);
         g.setFont(impact);
         g.drawString("Level " + game.getLevelHandler().getLevel() + " Completed", 100, 100);
+        g.setColor(scoreColor);
         g.drawString("Score: " + game.getPlayer().getScore(), width - 350, 100);
+        g.setColor(Color.white);
         g.drawLine(25, 110, width - 25, 110);
 
         g.setFont(reg);
@@ -179,6 +192,10 @@ public class UpgradeMenu {
         g.drawRect(width - 205, height - 75, 113, 30);
         g.drawString("Next Level", width - 200, height - 50);
 
+        //show price
+        g.setColor(Color.white);
+        g.drawString("Cost for next updgrade: " + price, 30, 30);
+
         //cursor
         g.setColor(Color.white);
         g.drawLine((int)x - 5, (int)y, (int)x + 5, (int)y);
@@ -205,6 +222,39 @@ public class UpgradeMenu {
             default:
                 break;
         }
+    }
+
+
+    //timer
+    long now2 = System.nanoTime();
+    long lastTime2 = now;
+    long timer2 = 1000000000 / 3;
+    public void blinkScore() {
+        int i = 0;
+        while(i < 6) {
+            if (now2 - lastTime2 >= timer2) {
+                if (scoreColor != Color.white) {
+                    scoreColor = Color.white;
+                } else {
+                    scoreColor = Color.red;
+                }
+
+                i++;
+                lastTime2 = now2;
+            }
+
+            now2 = System.nanoTime();
+        }
+    }
+
+    public void buyUpgrade() {
+        if(price <= game.getPlayer().getScore()) {
+            game.getPlayer().decreaseScore(price);
+            price *= 1.5;
+        }else {
+            blinkScore();
+        }
+
     }
 
     public void setUnClicked(boolean b) {
